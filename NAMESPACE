@@ -2,3 +2,11 @@
 
 export(get_demo_bdg)
 export(get_demo_bdg_idx)
+export(import_bedgraphs)
+import(purrr)
+import(rtracklayer)
+importFrom(GenomeInfoDb,"seqlevels<-")
+importFrom(GenomeInfoDb,"seqlevelsStyle<-")
+importFrom(GenomeInfoDb,seqinfo)
+importFrom(GenomeInfoDb,seqlevels)
+importFrom(stringr,str_detect)
