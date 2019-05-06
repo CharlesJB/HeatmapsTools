@@ -4,14 +4,16 @@
 \alias{produce_heatmap}
 \title{Convert coverage to heatmap}
 \usage{
-produce_heatmap(cov, peaks, column_title, force_seqlevels = FALSE)
+produce_heatmap(cov, peaks, name, force_seqlevels = FALSE)
 }
 \arguments{
-\item{cov}{A coverage generated with the \code{import_bedgraphs} function}
+\item{cov}{A coverage generated with the \code{import_bedgraphs} function.}
 
-\item{peaks}{A \code{GRanges} object representing the peaks to import}
+\item{peaks}{A \code{GRanges} object representing the peaks to import. Peaks
+will be resized to 5000 base pairs to make sure all regions are of the same
+length.}
 
-\item{column_title}{The name of the heatmap that will be shown at the top}
+\item{name}{The name of the heatmap that will be shown at the top.}
 
 \item{force_seqlevels}{If \code{TRUE}, remove regions that are not found
 in the coverage. Corresponds to \code{pruning.mode =

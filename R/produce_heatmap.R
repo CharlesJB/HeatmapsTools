@@ -2,9 +2,11 @@
 #'
 #' @return An heatmap object
 #'
-#' @param cov A coverage generated with the \code{import_bedgraphs} function
-#' @param peaks A \code{GRanges} object representing the peaks to import
-#' @param column_title The name of the heatmap that will be shown at the top
+#' @param cov A coverage generated with the \code{import_bedgraphs} function.
+#' @param peaks A \code{GRanges} object representing the peaks to import. Peaks
+#' will be resized to 5000 base pairs to make sure all regions are of the same
+#' length.
+#' @param name The name of the heatmap that will be shown at the top.
 #' @param force_seqlevels If \code{TRUE}, remove regions that are not found
 #'                in the coverage. Corresponds to \code{pruning.mode =
 #'                "coarse"} in \code{?seqinfo}. Default: \code{FALSE}.
@@ -22,28 +24,34 @@
 #' @importFrom magrittr %>%
 #'
 #' @export
-produce_heatmap <- function(cov, peaks, column_title, force_seqlevels = FALSE) {
-	stopifnot(is(cov, "GRanges"))
-	stopifnot(length(cov) > 0)
-	stopifnot(is(peaks, "GRanges"))
-	stopifnot(length(peaks) > 0)
+produce_heatmap <- function(cov, peaks, name, force_seqlevels = FALSE) {
+    stopifnot(is(cov, "GRanges"))
+    stopifnot(length(cov) > 0)
+    stopifnot(is(peaks, "GRanges"))
+    stopifnot(length(peaks) > 0)
+    stopifnot(is.character(name))
+    stopifnot(nchar(name) > 0)
 
-	stopifnot(is(force_seqlevels, "logical"))
-	if (!force_seqlevels) {
-		seqnames_cov <- GenomeInfoDb::seqnames(cov) %>% unique  %>% as.character
-		seqnames_peaks <- GenomeInfoDb::seqnames(peaks) %>% unique %>% as.character
-		stopifnot(all(seqnames_peaks %in% seqnames_cov))
-	} else {
-		GenomeInfoDb::seqlevels(peaks, pruning.mode = "coarse") <-
-			GenomeInfoDb::seqlevels(cov)
-	}
+    stopifnot(is(force_seqlevels, "logical"))
+    if (!force_seqlevels) {
+        seqnames_cov <- GenomeInfoDb::seqnames(cov) %>% unique  %>% as.character
+        seqnames_peaks <- GenomeInfoDb::seqnames(peaks) %>% unique %>% as.character
+        stopifnot(all(seqnames_peaks %in% seqnames_cov))
+    } else {
+        GenomeInfoDb::seqlevels(peaks, pruning.mode = "coarse") <-
+            GenomeInfoDb::seqlevels(cov)
+    }
 
-	m <- normalizeToMatrix(cov, peaks,
-					  value_column = "score", # TODO: Add param
-					  extend = 5000, # TODO: Add param
-					  mean_mode = "w0", # TODO: Add param
-					  w = 100) # TODO: Add param
-	col <- quantile(m, c(0.0, 0.7, 0.95), na.rm = TRUE) %>%
-		circlize::colorRamp2(c("white", "white", "red"))
-	EnrichedHeatmap(m, col = col, column_title = column_title)
+    peaks <- GenomicRanges::resize(peaks, 1, fix = "center")
+
+    m <- EnrichedHeatmap::normalizeToMatrix(cov, peaks,
+                      value_column = "score", # TODO: Add param
+                      extend = 5000, # TODO: Add param
+                      mean_mode = "w0", # TODO: Add param
+                      w = 100) # TODO: Add param
+    col <- quantile(m, c(0.0, 0.7, 0.95), na.rm = TRUE) %>%
+        circlize::colorRamp2(c("white", "white", "red"))
+
+    EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
+                                     column_title = name)
 }
