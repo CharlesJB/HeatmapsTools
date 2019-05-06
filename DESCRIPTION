@@ -1,6 +1,6 @@
 Package: heatmaps
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: 
     person(given = "Charles",
            family = "Joly Beauparlant",
@@ -20,9 +20,11 @@ Imports:
     purrr,
     stringr,
     rtracklayer,
-    GenomeInfoDb
+    GenomeInfoDb,
+    magrittr
 Depends:
-    R (>= 3.6)
+    R (>= 3.6),
+    peakimport
 Suggests:
     testthat (>= 2.1.0),
     knitr,
