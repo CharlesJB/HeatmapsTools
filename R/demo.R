@@ -1,7 +1,7 @@
 #' Get a bedGraph file for demo
-#' 
+#'
 #' @return The path to a valid bdg file
-#' 
+#'
 #' @examples
 #' bdg <- get_demo_bdg()
 #'
@@ -11,9 +11,9 @@ get_demo_bdg <- function() {
 }
 
 #' Get an indexed bedGraph file for demo
-#' 
+#'
 #' @return The path to a valid indexed bdg file
-#' 
+#'
 #' @examples
 #' bdg <- get_demo_bdg_idx()
 #'
