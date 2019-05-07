@@ -27,8 +27,8 @@ Convert coverage to heatmap
 }
 \examples{
 bdg <- get_demo_bdg()
-narrow_peak_file <- peakimport::get_demo_file("narrowPeak")
-peaks <- peakimport::import_peaks(narrow_peak_file)
+bed_file <- get_demo_bed_files()[[1]]
+peaks <- peakimport::import_peaks(bed_file)
 cov <- import_bedgraphs(bdg)
 heatmap <- produce_heatmap(cov, peaks, "demo")
 
