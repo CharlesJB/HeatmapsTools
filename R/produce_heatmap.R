@@ -12,6 +12,8 @@
 #' \code{vector} of \code{character} of the same length as the \code{peaks}
 #' param. If the \code{vector} is empty (i.e. \code{character(0)}, the heatmap
 #' won't be splitted. Default: \code{character(0)}.
+#' @param col A \code{circlize::colorRamp2} object. If \code{NULL}, default
+#' values will be used.
 #' @param force_seqlevels If \code{TRUE}, remove regions that are not found
 #'                in the coverage. Corresponds to \code{pruning.mode =
 #'                "coarse"} in \code{?seqinfo}. Default: \code{FALSE}.
@@ -32,8 +34,10 @@
 #' @importFrom magrittr %>%
 #'
 #' @export
+
 produce_heatmap <- function(cov, peaks, name, partitions = character(0),
-                            force_seqlevels = FALSE, seed = 99841) {
+                            col = NULL, force_seqlevels = FALSE, seed = 99841) {
+
     stopifnot(is(cov, "GRanges"))
     stopifnot(length(cov) > 0)
     stopifnot(is(peaks, "GRanges"))
@@ -69,8 +73,10 @@ produce_heatmap <- function(cov, peaks, name, partitions = character(0),
                       mean_mode = "w0", # TODO: Add param
                       w = 100) # TODO: Add param
 
-    col <- quantile(m, c(0.0, 0.7, 0.95), na.rm = TRUE) %>%
-        circlize::colorRamp2(c("white", "white", "red"))
+    if (is.null(col)) {
+        col <- quantile(m, c(0.0, 0.7, 0.95), na.rm = TRUE) %>%
+            circlize::colorRamp2(c("white", "white", "red"))
+    }
 
     if (length(partitions) > 0) {
         g <- unique(partitions)
