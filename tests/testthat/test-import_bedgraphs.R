@@ -80,8 +80,8 @@ test_that("genome works as expected", {
 
     expect_error(import_bedgraphs(filename = all_seqlevels_plus_invalid,
                                  genome = "hg38",
-								 keep_standard_chromosomes = FALSE))
+                                 keep_standard_chromosomes = FALSE))
     expect_error(import_bedgraphs(filename = one_seqlevel_plus_invalid,
                                  genome = "hg38",
-								 keep_standard_chromosomes = FALSE))
+                                 keep_standard_chromosomes = FALSE))
 })
