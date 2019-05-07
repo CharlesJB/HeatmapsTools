@@ -51,7 +51,7 @@ get_demo_bed_files <- function() {
 #'
 #' @export
 get_demo_heatmap_list <- function(partitions = FALSE) {
-    cov <- import_bedgraphs(get_demo_bdg())
+    cov <- import_bedgraph(get_demo_bdg())
     peaks <- map(get_demo_bed_files(), rtracklayer::import)
 
     if (!partitions) {

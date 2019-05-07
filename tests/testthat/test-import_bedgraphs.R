@@ -1,4 +1,4 @@
-context("test-import_bedgraphs")
+context("test-import_bedgraph")
 
 valid_filename <- get_demo_bdg()
 valid_filename_idx <- get_demo_bdg_idx()
@@ -20,26 +20,26 @@ valid_gr <- function(gr, expected_length = 30000) {
 
 test_that("filename works as expected", {
     # Valid cases
-    valid_gr(import_bedgraphs(filename = valid_filename))
-    valid_gr(import_bedgraphs(filename = valid_filename))
+    valid_gr(import_bedgraph(filename = valid_filename))
+    valid_gr(import_bedgraph(filename = valid_filename))
     
     # Invalid cases
-    expect_error(import_bedgraphs(filename = "filename_not_found"),
+    expect_error(import_bedgraph(filename = "filename_not_found"),
                  "file.exists(filename) is not TRUE",
                  fixed = TRUE)
-    expect_error(import_bedgraphs(filename = invalid_bdg_format))
-    expect_error(import_bedgraphs(filename = TRUE))
+    expect_error(import_bedgraph(filename = invalid_bdg_format))
+    expect_error(import_bedgraph(filename = TRUE))
 })
 
 test_that("filter_negative_coverages works as expected", {
     # Valid cases
-    valid_gr(import_bedgraphs(filename = valid_filename,
+    valid_gr(import_bedgraph(filename = valid_filename,
                               filter_negative_coverages = TRUE))
-    valid_gr(import_bedgraphs(filename = valid_filename,
+    valid_gr(import_bedgraph(filename = valid_filename,
                               filter_negative_coverages = FALSE))
 
     # Invalid case
-    expect_error(import_bedgraphs(filename = valid_filename,
+    expect_error(import_bedgraph(filename = valid_filename,
                                   filter_negative_coverages = "TRUE"),
                  "is.logical(filter_negative_coverages) is not TRUE",
                  fixed = TRUE)
@@ -47,15 +47,15 @@ test_that("filter_negative_coverages works as expected", {
 
 test_that("keep_standard_chromosomes works as expected", {
     # Valid cases
-    valid_gr(import_bedgraphs(filename = valid_filename,
+    valid_gr(import_bedgraph(filename = valid_filename,
                               keep_standard_chromosomes = TRUE))
-    gr <- import_bedgraphs(filename = valid_filename,
+    gr <- import_bedgraph(filename = valid_filename,
                            keep_standard_chromosomes = FALSE)
     expect_is(gr, "GRanges")
     expect_equal(length(gr), 30000+2)
 
     # Invalid case
-    expect_error(import_bedgraphs(filename = valid_filename,
+    expect_error(import_bedgraph(filename = valid_filename,
                                   keep_standard_chromosomes = "TRUE"),
                  "is.logical(keep_standard_chromosomes) is not TRUE",
                  fixed = TRUE)
@@ -63,25 +63,25 @@ test_that("keep_standard_chromosomes works as expected", {
 
 test_that("genome works as expected", {
     # Valid case
-    gr <- import_bedgraphs(filename = valid_filename, genome = "hg38")
+    gr <- import_bedgraph(filename = valid_filename, genome = "hg38")
     valid_gr(gr)
     expect_equal(unique(as.data.frame(seqinfo(gr))$genome), "hg38")
 
-    gr <- import_bedgraphs(filename = all_seqlevels_plus_invalid,
+    gr <- import_bedgraph(filename = all_seqlevels_plus_invalid,
                            genome = "hg38")
     valid_gr(gr, 25)
     expect_equal(unique(as.data.frame(seqinfo(gr))$genome), "hg38")
 
     # Invalid case
-    expect_error(import_bedgraphs(filename = valid_filename,
+    expect_error(import_bedgraph(filename = valid_filename,
                                   genome = "invalid_genome"),
                  "any(names(si) == genome) is not TRUE",
                  fixed = TRUE)
 
-    expect_error(import_bedgraphs(filename = all_seqlevels_plus_invalid,
+    expect_error(import_bedgraph(filename = all_seqlevels_plus_invalid,
                                  genome = "hg38",
                                  keep_standard_chromosomes = FALSE))
-    expect_error(import_bedgraphs(filename = one_seqlevel_plus_invalid,
+    expect_error(import_bedgraph(filename = one_seqlevel_plus_invalid,
                                  genome = "hg38",
                                  keep_standard_chromosomes = FALSE))
 })

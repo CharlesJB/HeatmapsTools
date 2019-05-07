@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' filenames <- get_demo_bdg()
-#' cov <- import_bedgraphs(filenames)
+#' cov <- import_bedgraph(filenames)
 #'
 #' @import rtracklayer
 #' @import purrr
@@ -22,7 +22,7 @@
 #' @importFrom GenomeInfoDb seqinfo
 #'
 #' @export
-import_bedgraphs <- function(filename,
+import_bedgraph <- function(filename,
                             filter_negative_coverages = TRUE,
                             keep_standard_chromosomes = TRUE,
                             genome = NULL) {

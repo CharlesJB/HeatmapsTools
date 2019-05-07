@@ -1,6 +1,6 @@
 context("test-produce_heatmap")
 
-valid_cov <- import_bedgraphs(get_demo_bdg())
+valid_cov <- import_bedgraph(get_demo_bdg())
 valid_narrow_peak_file <- peakimport::get_demo_file("bed")
 valid_peaks <- peakimport::import_peaks(valid_narrow_peak_file)
 valid_peaks_chr19 <- valid_peaks[seqnames(valid_peaks) == "chr19"]

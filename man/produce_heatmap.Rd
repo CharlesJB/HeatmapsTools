@@ -8,7 +8,7 @@ produce_heatmap(cov, peaks, name, partitions = character(0),
   force_seqlevels = FALSE, seed = 99841)
 }
 \arguments{
-\item{cov}{A coverage generated with the \code{import_bedgraphs} function.}
+\item{cov}{A coverage generated with the \code{import_bedgraph} function.}
 
 \item{peaks}{A \code{GRanges} object representing the peaks to import. Peaks
 will be resized to 5000 base pairs to make sure all regions are of the same
@@ -40,7 +40,7 @@ Convert coverage to heatmap
 bdg <- get_demo_bdg()
 bed_file <- get_demo_bed_files()[[1]]
 peaks <- peakimport::import_peaks(bed_file)
-cov <- import_bedgraphs(bdg)
+cov <- import_bedgraph(bdg)
 heatmap <- produce_heatmap(cov, peaks, "demo")
 
 }
