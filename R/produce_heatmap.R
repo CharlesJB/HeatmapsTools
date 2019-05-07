@@ -7,9 +7,17 @@
 #' will be resized to 5000 base pairs to make sure all regions are of the same
 #' length.
 #' @param name The name of the heatmap that will be shown at the top.
+#' @param partitions If you want to split the heatmap based on different group,
+#' you must specify the groups (or partitions). The \code{partition} must be a
+#' \code{vector} of \code{character} of the same length as the \code{peaks}
+#' param. If the \code{vector} is empty (i.e. \code{character(0)}, the heatmap
+#' won't be splitted. Default: \code{character(0)}.
 #' @param force_seqlevels If \code{TRUE}, remove regions that are not found
 #'                in the coverage. Corresponds to \code{pruning.mode =
 #'                "coarse"} in \code{?seqinfo}. Default: \code{FALSE}.
+#' @param seed Set a seed value for the color selection. Only used when
+#' \code{partition} is not \code{NULL}. The value must be the same as the one
+#' used for the \code{prepare_heatmap_list} function. Default: 99841.
 #'
 #' @examples
 #' bdg <- get_demo_bdg()
@@ -24,18 +32,29 @@
 #' @importFrom magrittr %>%
 #'
 #' @export
-produce_heatmap <- function(cov, peaks, name, force_seqlevels = FALSE) {
+produce_heatmap <- function(cov, peaks, name, partitions = character(0),
+                            force_seqlevels = FALSE, seed = 99841) {
     stopifnot(is(cov, "GRanges"))
     stopifnot(length(cov) > 0)
     stopifnot(is(peaks, "GRanges"))
     stopifnot(length(peaks) > 0)
     stopifnot(is.character(name))
     stopifnot(nchar(name) > 0)
-
+    stopifnot(is.character(partitions))
+    if (length(partitions) > 0) {
+        stopifnot(length(partitions) == length(peaks))
+        stopifnot(length(unique(partitions)) > 1)
+    }
     stopifnot(is(force_seqlevels, "logical"))
+    stopifnot(is.numeric(seed))
+
     if (!force_seqlevels) {
-        seqnames_cov <- GenomeInfoDb::seqnames(cov) %>% unique  %>% as.character
-        seqnames_peaks <- GenomeInfoDb::seqnames(peaks) %>% unique %>% as.character
+        seqnames_cov <- GenomeInfoDb::seqnames(cov) %>%
+            unique %>%
+            as.character
+        seqnames_peaks <- GenomeInfoDb::seqnames(peaks) %>%
+            unique %>%
+            as.character
         stopifnot(all(seqnames_peaks %in% seqnames_cov))
     } else {
         GenomeInfoDb::seqlevels(peaks, pruning.mode = "coarse") <-
@@ -49,9 +68,24 @@ produce_heatmap <- function(cov, peaks, name, force_seqlevels = FALSE) {
                       extend = 5000, # TODO: Add param
                       mean_mode = "w0", # TODO: Add param
                       w = 100) # TODO: Add param
+
     col <- quantile(m, c(0.0, 0.7, 0.95), na.rm = TRUE) %>%
         circlize::colorRamp2(c("white", "white", "red"))
 
-    EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
-                                     column_title = name)
+    if (length(partitions) > 0) {
+        g <- unique(partitions)
+        set.seed(seed)
+        col_blind <- ggthemes::colorblind_pal()(length(g))
+        axis_params <- list(facing = "left")
+        ha <- ComplexHeatmap::HeatmapAnnotation(
+                  lines = EnrichedHeatmap::anno_enriched(
+                      gp = grid::gpar(col = col_blind),
+                      axis_param = list(facing = "inside")))
+        EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
+                                         column_title = name,
+                                         top_annotation = ha)
+    } else {
+        EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
+                                         column_title = name)
+    }
 }

@@ -47,6 +47,7 @@ get_demo_bed_files <- function() {
 #' bdg <- get_demo_heatmap_list()
 #'
 #' @import purrr
+#' @importFrom magrittr %>%
 #'
 #' @export
 get_demo_heatmap_list <- function(partitions = FALSE) {
@@ -63,7 +64,8 @@ get_demo_heatmap_list <- function(partitions = FALSE) {
                                     name = "demo2",
                                     force_seqlevels = TRUE)
     } else {
-        partitions <- c(rep(1, 10), rep(2, 10))
+        partitions <- c(rep(1, 10), rep(2, 10)) %>%
+		          as.character
         heatmap1 <- produce_heatmap(cov = cov,
                                     peaks = peaks[[1]],
                                     name = "demo1",

@@ -4,7 +4,8 @@
 \alias{produce_heatmap}
 \title{Convert coverage to heatmap}
 \usage{
-produce_heatmap(cov, peaks, name, force_seqlevels = FALSE)
+produce_heatmap(cov, peaks, name, partitions = character(0),
+  force_seqlevels = FALSE, seed = 99841)
 }
 \arguments{
 \item{cov}{A coverage generated with the \code{import_bedgraphs} function.}
@@ -15,9 +16,19 @@ length.}
 
 \item{name}{The name of the heatmap that will be shown at the top.}
 
+\item{partitions}{If you want to split the heatmap based on different group,
+you must specify the groups (or partitions). The \code{partition} must be a
+\code{vector} of \code{character} of the same length as the \code{peaks}
+param. If the \code{vector} is empty (i.e. \code{character(0)}, the heatmap
+won't be splitted. Default: \code{character(0)}.}
+
 \item{force_seqlevels}{If \code{TRUE}, remove regions that are not found
 in the coverage. Corresponds to \code{pruning.mode =
 "coarse"} in \code{?seqinfo}. Default: \code{FALSE}.}
+
+\item{seed}{Set a seed value for the color selection. Only used when
+\code{partition} is not \code{NULL}. The value must be the same as the one
+used for the \code{prepare_heatmap_list} function. Default: 99841.}
 }
 \value{
 An heatmap object
