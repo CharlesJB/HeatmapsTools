@@ -1,6 +1,6 @@
 Package: heatmaps
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.9
+Version: 0.0.10
 Authors@R: 
     person(given = "Charles",
            family = "Joly Beauparlant",
@@ -23,7 +23,7 @@ Imports:
     GenomeInfoDb,
     magrittr
 Depends:
-    R (>= 3.6),
+    R (>= 3.5),
     peakimport,
     EnrichedHeatmap
 Suggests:
