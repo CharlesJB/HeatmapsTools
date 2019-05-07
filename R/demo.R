@@ -35,3 +35,46 @@ get_demo_bed_files <- function() {
       system.file("extdata/demo2.bed", package="heatmaps", mustWork = TRUE))
 
 }
+
+#' Return a list of heatmaps for demo
+#'
+#' @return A \code{list} of \code{Heatmap} objects
+#'
+#' @param partitions Should the heatmaps be splitted? \code{TRUE} or
+#' \code{FALSE}. Default: \code{FALSE}.
+#'
+#' @examples
+#' bdg <- get_demo_heatmap_list()
+#'
+#' @import purrr
+#'
+#' @export
+get_demo_heatmap_list <- function(partitions = FALSE) {
+    cov <- import_bedgraphs(get_demo_bdg())
+    peaks <- map(get_demo_bed_files(), rtracklayer::import)
+
+    if (!partitions) {
+        heatmap1 <- produce_heatmap(cov = cov,
+                                    peaks = peaks[[1]],
+                                    name = "demo1",
+                                    force_seqlevels = TRUE)
+        heatmap2 <- produce_heatmap(cov = cov,
+                                    peaks = peaks[[2]],
+                                    name = "demo2",
+                                    force_seqlevels = TRUE)
+    } else {
+        partitions <- c(rep(1, 10), rep(2, 10))
+        heatmap1 <- produce_heatmap(cov = cov,
+                                    peaks = peaks[[1]],
+                                    name = "demo1",
+                                    partitions = partitions,
+                                    force_seqlevels = TRUE)
+        heatmap2 <- produce_heatmap(cov = cov,
+                                    peaks = peaks[[2]],
+                                    name = "demo2",
+                                    partitions = partitions,
+                                    force_seqlevels = TRUE)
+
+    }
+    list(heatmap1 = heatmap1, heatmap2 = heatmap2)
+}
