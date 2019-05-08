@@ -37,9 +37,9 @@
 
 produce_heatmap <- function(cov, peaks, name, partitions = character(0),
                             col = NULL, force_seqlevels = FALSE, seed = 99841) {
-
-    stopifnot(is(cov, "GRanges"))
-    stopifnot(length(cov) > 0)
+# TODO: cov will be a list of GRanges
+#    stopifnot(is(cov, "GRanges"))
+#    stopifnot(length(cov) > 0)
     stopifnot(is(peaks, "GRanges"))
     stopifnot(length(peaks) > 0)
     stopifnot(is.character(name))
