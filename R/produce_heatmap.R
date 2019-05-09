@@ -86,11 +86,12 @@ produce_heatmap <- function(cov, peaks, name, partitions = character(0),
                   lines = EnrichedHeatmap::anno_enriched(
                       gp = grid::gpar(col = col_blind),
                       axis_param = list(facing = "inside")))
-        EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
-                                         column_title = name,
-                                         top_annotation = ha)
     } else {
-        EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
-                                         column_title = name)
+        ha <- ComplexHeatmap::HeatmapAnnotation(
+                  lines = EnrichedHeatmap::anno_enriched(
+                      axis_param = list(facing = "inside")))
     }
+    EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
+                                     column_title = name,
+                                     top_annotation = ha)
 }
