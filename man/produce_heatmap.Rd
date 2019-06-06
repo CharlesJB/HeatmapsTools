@@ -5,7 +5,7 @@
 \title{Convert coverage to heatmap}
 \usage{
 produce_heatmap(cov, peaks, name, partitions = character(0),
-  force_seqlevels = FALSE, seed = 99841)
+  col = NULL, force_seqlevels = FALSE, seed = 99841)
 }
 \arguments{
 \item{cov}{A coverage generated with the \code{import_bedgraph} function.}
@@ -21,6 +21,9 @@ you must specify the groups (or partitions). The \code{partition} must be a
 \code{vector} of \code{character} of the same length as the \code{peaks}
 param. If the \code{vector} is empty (i.e. \code{character(0)}, the heatmap
 won't be splitted. Default: \code{character(0)}.}
+
+\item{col}{A \code{circlize::colorRamp2} object. If \code{NULL}, default
+values will be used.}
 
 \item{force_seqlevels}{If \code{TRUE}, remove regions that are not found
 in the coverage. Corresponds to \code{pruning.mode =
