@@ -5,7 +5,8 @@
 \title{Convert coverage to heatmap}
 \usage{
 produce_heatmap(cov, peaks, name, partitions = character(0),
-  col = NULL, force_seqlevels = FALSE, seed = 99841)
+  col = NULL, force_seqlevels = FALSE, seed = 99841,
+  top_anno_ylim = NULL)
 }
 \arguments{
 \item{cov}{A coverage generated with the \code{import_bedgraph} function.}
@@ -32,6 +33,9 @@ in the coverage. Corresponds to \code{pruning.mode =
 \item{seed}{Set a seed value for the color selection. Only used when
 \code{partition} is not \code{NULL}. The value must be the same as the one
 used for the \code{prepare_heatmap_list} function. Default: 99841.}
+
+\item{top_anno_ylim}{Manually set the ylim value for the top_annotation.
+If \code{NULL}, value is inferred using the data. Default: \code{NULL}.}
 }
 \value{
 An heatmap object

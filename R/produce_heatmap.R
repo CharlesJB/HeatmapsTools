@@ -20,6 +20,8 @@
 #' @param seed Set a seed value for the color selection. Only used when
 #' \code{partition} is not \code{NULL}. The value must be the same as the one
 #' used for the \code{prepare_heatmap_list} function. Default: 99841.
+#' @param top_anno_ylim Manually set the ylim value for the top_annotation.
+#' If \code{NULL}, value is inferred using the data. Default: \code{NULL}.
 #'
 #' @examples
 #' bdg <- get_demo_bdg()
@@ -35,8 +37,14 @@
 #'
 #' @export
 
-produce_heatmap <- function(cov, peaks, name, partitions = character(0),
-                            col = NULL, force_seqlevels = FALSE, seed = 99841) {
+produce_heatmap <- function(cov,
+                            peaks,
+                            name,
+                            partitions = character(0),
+                            col = NULL,
+                            force_seqlevels = FALSE,
+                            seed = 99841,
+                            top_anno_ylim = NULL) {
     stopifnot(is(cov, "GRanges"))
     stopifnot(length(cov) > 0)
     stopifnot(is(peaks, "GRanges"))
@@ -50,6 +58,7 @@ produce_heatmap <- function(cov, peaks, name, partitions = character(0),
     }
     stopifnot(is(force_seqlevels, "logical"))
     stopifnot(is.numeric(seed))
+    stopifnot(is.null(top_anno_ylim) | is.numeric(top_anno_ylim))
 
     if (!force_seqlevels) {
         seqnames_cov <- GenomeInfoDb::seqnames(cov) %>%
@@ -85,11 +94,13 @@ produce_heatmap <- function(cov, peaks, name, partitions = character(0),
         ha <- ComplexHeatmap::HeatmapAnnotation(
                   lines = EnrichedHeatmap::anno_enriched(
                       gp = grid::gpar(col = col_blind),
-                      axis_param = list(facing = "inside")))
+                      axis_param = list(facing = "inside"),
+                      ylim = top_anno_ylim))
     } else {
         ha <- ComplexHeatmap::HeatmapAnnotation(
                   lines = EnrichedHeatmap::anno_enriched(
-                      axis_param = list(facing = "inside")))
+                      axis_param = list(facing = "inside"),
+                      ylim = top_anno_ylim))
     }
     EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name,
                                      column_title = name,
