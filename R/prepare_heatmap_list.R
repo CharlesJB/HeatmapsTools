@@ -29,7 +29,7 @@ prepare_heatmap_list <- function(heatmap_list, partitions = character(0),
                                  seed = 99841) {
     stopifnot(is(heatmap_list, "list"))
     stopifnot(all(map_lgl(heatmap_list, is, "Heatmap")))
-    stopifnot(is.character(partitions))
+    stopifnot(is.character(partitions) | is.factor(partitions))
     if (length(partitions) > 0) {
         stopifnot(length(partitions) == nrow(heatmap_list[[1]]@matrix))
         stopifnot(length(unique(partitions)) > 1)
