@@ -51,7 +51,7 @@ produce_heatmap <- function(cov,
     stopifnot(length(peaks) > 0)
     stopifnot(is.character(name))
     stopifnot(nchar(name) > 0)
-    stopifnot(is.character(partitions) | is.factor(partition))
+    stopifnot(is.character(partitions) | is.factor(partitions))
     if (length(partitions) > 0) {
         stopifnot(length(partitions) == length(peaks))
         stopifnot(length(unique(partitions)) > 1)
