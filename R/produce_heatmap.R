@@ -14,6 +14,9 @@
 #' won't be splitted. Default: \code{character(0)}.
 #' @param col A \code{circlize::colorRamp2} object. If \code{NULL}, default
 #' values will be used.
+#' @param col_order A \code{numeric} object corresponding to the order of the
+#' colors in the right annotation. To use when the colors are not matchning
+#' with the top_annotation. Default: \{NULL}.
 #' @param force_seqlevels If \code{TRUE}, remove regions that are not found
 #'                in the coverage. Corresponds to \code{pruning.mode =
 #'                "coarse"} in \code{?seqinfo}. Default: \code{FALSE}.
@@ -42,6 +45,7 @@ produce_heatmap <- function(cov,
                             name,
                             partitions = character(0),
                             col = NULL,
+                            col_order = NULL,
                             force_seqlevels = FALSE,
                             seed = 99841,
                             top_anno_ylim = NULL) {
@@ -90,6 +94,10 @@ produce_heatmap <- function(cov,
         g <- unique(partitions)
         set.seed(seed)
         col_blind <- ggthemes::colorblind_pal()(length(g))
+        if (!is.null(col_order)) {
+            col_blind <- col_blind[col_order]
+        }
+
         axis_params <- list(facing = "left")
         ha <- ComplexHeatmap::HeatmapAnnotation(
                   lines = EnrichedHeatmap::anno_enriched(

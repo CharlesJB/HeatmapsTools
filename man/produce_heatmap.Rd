@@ -5,8 +5,8 @@
 \title{Convert coverage to heatmap}
 \usage{
 produce_heatmap(cov, peaks, name, partitions = character(0),
-  col = NULL, force_seqlevels = FALSE, seed = 99841,
-  top_anno_ylim = NULL)
+  col = NULL, col_order = NULL, force_seqlevels = FALSE,
+  seed = 99841, top_anno_ylim = NULL)
 }
 \arguments{
 \item{cov}{A coverage generated with the \code{import_bedgraph} function.}
