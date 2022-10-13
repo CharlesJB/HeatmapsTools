@@ -27,25 +27,25 @@
 #' @export
 prepare_heatmap_list <- function(heatmap_list, partitions = character(0),
                                  seed = 99841) {
-    stopifnot(is(heatmap_list, "list"))
-    stopifnot(all(map_lgl(heatmap_list, is, "Heatmap")))
-    stopifnot(is.character(partitions) | is.factor(partitions))
-    if (length(partitions) > 0) {
-        stopifnot(length(partitions) == nrow(heatmap_list[[1]]@matrix))
-        stopifnot(length(unique(partitions)) > 1)
-    }
-    stopifnot(is.numeric(seed))
+  stopifnot(is(heatmap_list, "list"))
+  stopifnot(all(map_lgl(heatmap_list, is, "Heatmap")))
+  stopifnot(is.character(partitions) | is.factor(partitions))
+  if (length(partitions) > 0) {
+    stopifnot(length(partitions) == nrow(heatmap_list[[1]]@matrix))
+    stopifnot(length(unique(partitions)) > 1)
+  }
+  stopifnot(is.numeric(seed))
 
-    if (length(partitions) > 0) {
-        g <- unique(partitions)
-        set.seed(seed)
-        col_blind <- ggthemes::colorblind_pal()(length(g))
-        heatmaps_partitions <- ComplexHeatmap::Heatmap(partitions,
-                                       col = structure(col_blind),
-                                       name = "",
-                                       show_row_names = FALSE,
-                                       width = grid::unit(3, "mm"))
-        heatmap_list <- c(heatmap_list, heatmaps_partitions)
-    }
-    purrr::reduce(heatmap_list, ComplexHeatmap::`+.AdditiveUnit`)
+  if (length(partitions) > 0) {
+    g <- unique(partitions)
+    set.seed(seed)
+    col_blind <- (ggthemes::colorblind_pal())(length(g))
+    heatmaps_partitions <- ComplexHeatmap::Heatmap(partitions, 
+                                                   col = structure(col_blind), 
+                                                   name = "partitions", 
+                                                   show_row_names = FALSE, 
+                                                   width = grid::unit(3, "mm"))
+    heatmap_list <- c(heatmap_list, heatmaps_partitions)
+  }
+  purrr::reduce(heatmap_list, ComplexHeatmap::`+.AdditiveUnit`)
 }
