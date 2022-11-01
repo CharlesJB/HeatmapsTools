@@ -29,6 +29,15 @@
 #' If \code{FALSE}, row names are hidden Default: \code{FALSE}.
 #' @param row_labels Manually set row label on the left side.
 #' If \code{NULL}, no row label. Default: \code{NULL}.
+#' @param extend extended base pairs to the upstream and downstream of target.
+#' It can be a vector of length one or two. If it is length one, it means
+#' extension to the upstream and downstream are the same.
+#' @param w window size for splitting upstream and downstream.
+#' @param value_column column index in signal that will be mapped to colors. If
+#' it is NULL, an internal column which all contains 1 will be used.
+#' @param mean_mode when a window is not perfectly overlapped to signal, how to
+#' summarize values to this window. See 'Details' section for a detailed
+#' explanation.
 #'
 #' @examples
 #' bdg <- get_demo_bdg()
@@ -43,8 +52,6 @@
 #' @importFrom magrittr %>%
 #'
 #' @export
-
-
 produce_heatmap <- function(cov, 
                             peaks, 
                             name, 
@@ -55,7 +62,11 @@ produce_heatmap <- function(cov,
                             seed = 99841, 
                             top_anno_ylim = NULL, 
                             show_row_names = FALSE, 
-                            row_labels = NULL){
+                            row_labels = NULL,
+			    extend = 5000,
+			    w = max(extend)/100,
+			    value_column = "score",
+			    mean_mode = "w0"){
   stopifnot(is(cov, "GRanges"))
   stopifnot(length(cov) > 0)
   stopifnot(is(peaks, "GRanges"))
@@ -89,10 +100,10 @@ produce_heatmap <- function(cov,
   peaks <- GenomicRanges::resize(peaks, 1, fix = "center")
   
   m <- EnrichedHeatmap::normalizeToMatrix(cov, peaks,
-                                          value_column = "score", # TODO: Add param
-                                          extend = 5000, # TODO: Add param
-                                          mean_mode = "w0", # TODO: Add param
-                                          w = 100) # TODO: Add param
+                                          value_column = value_column,
+                                          extend = extend,
+                                          mean_mode = mean_mode,
+                                          w = w)
   
   if (is.null(col)) {
     col <- quantile(m, c(0.0, 0.7, 0.95), na.rm = TRUE) %>% 
