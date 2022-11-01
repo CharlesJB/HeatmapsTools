@@ -33,7 +33,7 @@
 #' @examples
 #' bdg <- get_demo_bdg()
 #' bed_file <- get_demo_bed_files()[[1]]
-#' peaks <- peakimport::import_peaks(bed_file)
+#' peaks <- import(bed_file)
 #' cov <- import_bedgraph(bdg)
 #' heatmap <- produce_heatmap(cov, peaks, "demo")
 #'

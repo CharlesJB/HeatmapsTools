@@ -1,6 +1,6 @@
 Package: HeatmapsTools
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.21
+Version: 0.0.22
 Authors@R: 
     person(given = "Charles",
            family = "Joly Beauparlant",
@@ -24,7 +24,6 @@ Imports:
     magrittr
 Depends:
     R (>= 3.4),
-    peakimport,
     EnrichedHeatmap
 Suggests:
     testthat (>= 2.1.0),
