@@ -7,7 +7,7 @@
 #'
 #' @export
 get_demo_bdg <- function() {
-    system.file("extdata/demo.bdg", package="heatmaps", mustWork = TRUE)
+    system.file("extdata/demo.bdg", package="HeatmapsTools", mustWork = TRUE)
 }
 
 #' Get an indexed bedGraph file for demo
@@ -19,7 +19,7 @@ get_demo_bdg <- function() {
 #'
 #' @export
 get_demo_bdg_idx <- function() {
-    system.file("extdata/demo.bdg.gz", package="heatmaps", mustWork = TRUE)
+    system.file("extdata/demo.bdg.gz", package="HeatmapsTools", mustWork = TRUE)
 }
 
 #' Get a bed file for demo
@@ -31,8 +31,8 @@ get_demo_bdg_idx <- function() {
 #'
 #' @export
 get_demo_bed_files <- function() {
-    c(system.file("extdata/demo.bed", package="heatmaps", mustWork = TRUE),
-      system.file("extdata/demo2.bed", package="heatmaps", mustWork = TRUE))
+    c(system.file("extdata/demo.bed", package="HeatmapsTools", mustWork = TRUE),
+      system.file("extdata/demo2.bed", package="HeatmapsTools", mustWork = TRUE))
 
 }
 
