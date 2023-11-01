@@ -4,8 +4,12 @@
 \alias{import_bedgraph}
 \title{Import bedgraph files}
 \usage{
-import_bedgraph(filename, filter_negative_coverages = TRUE,
-  keep_standard_chromosomes = TRUE, genome = NULL)
+import_bedgraph(
+  filename,
+  filter_negative_coverages = TRUE,
+  keep_standard_chromosomes = TRUE,
+  genome = NULL
+)
 }
 \arguments{
 \item{filename}{Paths to a valid bedGraph file.}

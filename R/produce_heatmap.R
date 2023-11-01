@@ -16,7 +16,7 @@
 #' values will be used.
 #' @param col_order A \code{numeric} object corresponding to the order of the
 #' colors in the right annotation. To use when the colors are not matchning
-#' with the top_annotation. Default: \{NULL}.
+#' with the top_annotation. Default: \code{NULL}.
 #' @param force_seqlevels If \code{TRUE}, remove regions that are not found
 #'                in the coverage. Corresponds to \code{pruning.mode =
 #'                "coarse"} in \code{?seqinfo}. Default: \code{FALSE}.
@@ -38,6 +38,10 @@
 #' @param mean_mode when a window is not perfectly overlapped to signal, how to
 #' summarize values to this window. See 'Details' section for a detailed
 #' explanation.
+#' @param raster_by_magick Value for the \code{raster_by_magick} parameter for
+#' the \code{EnrichedHeatmap} function. Setting to FALSE might help to avoid
+#' errors when calling the \code{draw} function with a large set of peaks.
+#' Default: \code{TRUE}.
 #'
 #' @examples
 #' bdg <- get_demo_bdg()
@@ -63,10 +67,11 @@ produce_heatmap <- function(cov,
                             top_anno_ylim = NULL, 
                             show_row_names = FALSE, 
                             row_labels = NULL,
-			    extend = 5000,
-			    w = max(extend)/100,
-			    value_column = "score",
-			    mean_mode = "w0"){
+                            extend = 5000,
+                            w = max(extend)/100,
+                            value_column = "score",
+                            mean_mode = "w0",
+                            raster_by_magick = TRUE){
   stopifnot(is(cov, "GRanges"))
   stopifnot(length(cov) > 0)
   stopifnot(is(peaks, "GRanges"))
@@ -135,13 +140,15 @@ produce_heatmap <- function(cov,
     EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name, 
                                      column_title = name, top_annotation = ha, 
                                      show_row_names = show_row_names, 
-                                     row_names_side = "left")
+                                     row_names_side = "left",
+                                     raster_by_magick = raster_by_magick)
   } else {
     EnrichedHeatmap::EnrichedHeatmap(m, col = col, name = name, 
                                      column_title = name, top_annotation = ha, 
                                      show_row_names = show_row_names, 
                                      row_names_side = "left",
                                      row_labels = row_labels[rownames(m)], 
-                                     row_names_gp = gpar(fontsize = 7))
+                                     row_names_gp = gpar(fontsize = 7),
+                                     raster_by_magick = raster_by_magick)
   }
 }

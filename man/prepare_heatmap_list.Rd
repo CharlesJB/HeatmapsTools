@@ -4,8 +4,7 @@
 \alias{prepare_heatmap_list}
 \title{Combine the heatmaps objects}
 \usage{
-prepare_heatmap_list(heatmap_list, partitions = character(0),
-  seed = 99841)
+prepare_heatmap_list(heatmap_list, partitions = character(0), seed = 99841)
 }
 \arguments{
 \item{heatmap_list}{The \code{list} of \code{Heatmap} objects produced with

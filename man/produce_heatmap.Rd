@@ -4,9 +4,24 @@
 \alias{produce_heatmap}
 \title{Convert coverage to heatmap}
 \usage{
-produce_heatmap(cov, peaks, name, partitions = character(0),
-  col = NULL, col_order = NULL, force_seqlevels = FALSE,
-  seed = 99841, top_anno_ylim = NULL)
+produce_heatmap(
+  cov,
+  peaks,
+  name,
+  partitions = character(0),
+  col = NULL,
+  col_order = NULL,
+  force_seqlevels = FALSE,
+  seed = 99841,
+  top_anno_ylim = NULL,
+  show_row_names = FALSE,
+  row_labels = NULL,
+  extend = 5000,
+  w = max(extend)/100,
+  value_column = "score",
+  mean_mode = "w0",
+  raster_by_magick = TRUE
+)
 }
 \arguments{
 \item{cov}{A coverage generated with the \code{import_bedgraph} function.}
@@ -26,6 +41,10 @@ won't be splitted. Default: \code{character(0)}.}
 \item{col}{A \code{circlize::colorRamp2} object. If \code{NULL}, default
 values will be used.}
 
+\item{col_order}{A \code{numeric} object corresponding to the order of the
+colors in the right annotation. To use when the colors are not matchning
+with the top_annotation. Default: \code{NULL}.}
+
 \item{force_seqlevels}{If \code{TRUE}, remove regions that are not found
 in the coverage. Corresponds to \code{pruning.mode =
 "coarse"} in \code{?seqinfo}. Default: \code{FALSE}.}
@@ -36,6 +55,30 @@ used for the \code{prepare_heatmap_list} function. Default: 99841.}
 
 \item{top_anno_ylim}{Manually set the ylim value for the top_annotation.
 If \code{NULL}, value is inferred using the data. Default: \code{NULL}.}
+
+\item{show_row_names}{Show matrix rownames on left side.
+If \code{FALSE}, row names are hidden Default: \code{FALSE}.}
+
+\item{row_labels}{Manually set row label on the left side.
+If \code{NULL}, no row label. Default: \code{NULL}.}
+
+\item{extend}{extended base pairs to the upstream and downstream of target.
+It can be a vector of length one or two. If it is length one, it means
+extension to the upstream and downstream are the same.}
+
+\item{w}{window size for splitting upstream and downstream.}
+
+\item{value_column}{column index in signal that will be mapped to colors. If
+it is NULL, an internal column which all contains 1 will be used.}
+
+\item{mean_mode}{when a window is not perfectly overlapped to signal, how to
+summarize values to this window. See 'Details' section for a detailed
+explanation.}
+
+\item{raster_by_magick}{Value for the \code{raster_by_magick} parameter for
+the \code{EnrichedHeatmap} function. Setting to FALSE might help to avoid
+errors when calling the \code{draw} function with a large set of peaks.
+Default: \code{TRUE}.}
 }
 \value{
 An heatmap object
@@ -46,7 +89,7 @@ Convert coverage to heatmap
 \examples{
 bdg <- get_demo_bdg()
 bed_file <- get_demo_bed_files()[[1]]
-peaks <- peakimport::import_peaks(bed_file)
+peaks <- import(bed_file)
 cov <- import_bedgraph(bdg)
 heatmap <- produce_heatmap(cov, peaks, "demo")
 
